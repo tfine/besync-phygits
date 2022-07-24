@@ -15,3 +15,17 @@ Installation requires an Web3 API key, an Infura key, and a Polygon wallet with 
 Although this is just a basic implementation, we are impressed at the instant decentralization and scability at our fingertips for such an ambitious idea. Refining the metadata standard and creating more ways to upload and onboard phygits will be the next task.
 
 Please contact us if interested!
+
+## Installation
+
+Clone the git repo
+npm install
+add relevant keys to .env (WEB3 STORAGE, POLYGON MUMBAI PRIVATE KEY, AND INFURA API KEY): 
+
+WEBSTORAGE_KEY=e
+TBL_PRIVATE_KEY=
+TBL_INFURA=
+
+npm install nodemon
+nodemon npm run
+go to url at 0.0.0.0:XXXXX
