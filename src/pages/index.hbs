@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BeSync Phygit </title>
+        
+    <!-- Meta tags for SEO and social sharing -->
+    <link rel="canonical" href="{{seo.url}}">
+    <meta name="description" content="{{seo.description}}">
+    <meta property="og:title" content="{{seo.title}}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{seo.url}}">
+    <meta property="og:description" content="{{seo.description}}">
+    <meta property="og:image" content="{{seo.image}}">
+    <meta name="twitter:card" content="summary">
+
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="content" role="main">
+        
+        <h1 class="title">BeSync Phygit</h1>
+        
+        <div class="color-form">
+            <p>
+              Create a new "geotemporal" phygit!
+            </p>
+            <p>
+              Add any datafile. JPGs with EXIF data will have metadata extracted.
+            </p>
+          <!-- Multipart form, posted back to the same page -->
+    
+          <form action="/" method="post" enctype="multipart/form-data">
+          <input type="file" name="avatar" /><br />
+          
+          {{#if cid}}
+            Now your phygit is on IPFS with Filecoin! Here is the CID: <a href="https://ipfs.io/ipfs/{{cid}}" >{{cid}}</a>
+          <br />
+          <br />
+          {{/if}}
+          Latitude (i.e., 40.730610 for NYC): <input type="number" name="lat" id="lat" step="any"/><br />
+          Longitude (i.e., -73.935242 for NYC): <input type="number" name="long" id="long" step="any"/><br />
+          Altitude (in meters, i.e. 33 for NYC): <input type="number" name="alt" id="alt" step="any"/><br />
+          Datetime: <input type="datetime-local" name="dt" id="dt" /><br />
+            <button type="submit">Submit</button>
+          </form>
+          
+        </div>
+            
+      </div>
+    </div>
+  </body>
+</html>
