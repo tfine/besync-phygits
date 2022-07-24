@@ -13,9 +13,6 @@ const fastify = require("fastify")({
 // environment files
 require('dotenv').config()
 
-// child process
-const { exec } = require("child_process");
-
 // External multer library for proper uploading
 
 const multer = require("fastify-multer");
@@ -45,7 +42,7 @@ fastify.register(require("@fastify/static"), {
 // Formbody for form parsing in fastify
 fastify.register(require("@fastify/formbody"));
 
-// View is a templating manager for fastify, using handlebars, same engine as Express
+// templates for fastify, using handlebars, same engine as Express
 fastify.register(require("@fastify/view"), {
   engine: {
     handlebars: require("handlebars"),
@@ -61,19 +58,16 @@ if (seo.url === "glitch-default") {
 // register multer in fastify
 fastify.register(multer.contentParser);
 
+// exifimage library
 var ExifImage = require("exif").ExifImage;
 
+// function to extract exif data
 function exifpump(filename) {
   try {
     new ExifImage({ image: filename }, function (error, exifData) {
       if (error) console.log("Error: " + error.message);
       else console.log("success");
-      console.log(
-        latlongtodegrees(exifData["gps"]["GPSLatitude"]),
-        latlongtodegrees(exifData["gps"]["GPSLongitude"]),
-        exifData["gps"]["GPSAltitude"],
-        exifData["exif"]["DateTimeOriginal"]
-      );
+
       lat = latlongtodegrees(exifData["gps"]["GPSLatitude"]);
       long = latlongtodegrees(exifData["gps"]["GPSLongitude"]);
       alt = exifData["gps"]["GPSAltitude"];
@@ -97,13 +91,13 @@ function isFileImage(file) {
 }
 
 /**
- * Simple home page route
+ * home page route
  *
  * Returns src/pages/index.hbs with basic BeSync form
  */
 
 fastify.get("/", function (request, reply) {
-  // params is an object we'll pass to our handlebars template
+  // params for our handlebars template
   let params = { seo: seo };
   return reply.view("/src/pages/index.hbs", params);
 });
@@ -121,6 +115,7 @@ fastify.route({
     // put information about form submission to log
     console.log(request.body);
 
+    // get submission params
     var alt = request.body.alt;
     var lat = request.body.lat;
     var long = request.body.long;
@@ -151,12 +146,13 @@ fastify.route({
       }
     }
 
+    // load file from path for uploading
     const file = await getFilesFromPath(request.file.path);
 
     // get CID and upload to Web3 Storage
     const cid = await storage.put(file);
 
-    // print CID to console
+    // print IPFS CID to console
     console.log(`IPFS CID: ${cid}`);
 
     // check current variables
