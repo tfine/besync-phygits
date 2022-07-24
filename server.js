@@ -20,6 +20,9 @@ const { exec } = require("child_process");
 
 const multer = require("fastify-multer");
 
+// bodyparser for data
+const bodyParser = require('body-parser')
+
 // Make local /uploads directory for all files
 // In future, may want to put everything more securely in the cloud
 const upload = multer({ dest: "./uploads" });
@@ -169,11 +172,12 @@ fastify.route({
     console.log(tbl);
 
     // add new data to phygit table through tableland
-    const writeRes = await tbl.write(`INSERT INTO phygit_collection_80001_667 (phygit_CID, phygit_latitude, phygit_longitude, phygit_altitude) VALUES ('${cid}', '${lat}', '${long}', '${alt}');`);
+    const writeRes = await tbl.write(`INSERT INTO phygit_collection_80001_667 (id, phygit_CID, phygit_latitude, phygit_longitude, phygit_altitude) VALUES (4, '${cid}', '${lat}', '${long}', '${alt}');`);
     console.log(writeRes);
 
     // receive hash of successful transaction 
     // consider storing
+    console.log("Successful transaction");
     const receiptRes = await tbl.receipt(writeRes['hash']);
     console.log(receiptRes);
 
@@ -203,23 +207,10 @@ fastify.get("/phygits", async function (request, reply) {
   console.log("CURRENT ROWS");
   console.log(readRes["rows"]);
 
+  console.log(rows[0]);
+
   let params = { seo: seo, rows:rows };
 
-  // const writeRes = await tbl.write(`INSERT INTO cli_demo_table_5_199 (id, name) VALUES (5, 'Solve it');`);
-  // console.log(writeRes);
-  /*
-  exec('tableland write "INSERT INTO cli_demo_table_5_199 VALUES (4, "asdfdasddBobby asdfsd");";', (error, stdout, stderr) => {
-    if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-    }
-    if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-    }
-    console.log(`stdout: ${stdout}`);
-});
-*/
   return reply.view("/src/pages/phygits.hbs", params);
 
 });
